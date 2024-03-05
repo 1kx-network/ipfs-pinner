@@ -12,7 +12,11 @@ WORKDIR /app
 RUN apk update && apk add --no-cache bash nodejs npm git && npm install -g @web3-storage/w3cli
 COPY --from=builder --chmod=700 /build/ipfs-server /app
 
-RUN apk del git && rm -rf /var/cache/apk/* /root/.npm /tmp/*
+RUN apk del git && rm -rf /var/cache/apk/* /root/.npm /tmp/* \
+    && addgroup -S ipfs-pinner -g 10001 && adduser -S ipfs-pinner -G ipfs-pinner -u 10001 \
+    && chown -R ipfs-pinner:ipfs-pinner /app
+
+USER ipfs-pinner
 
 HEALTHCHECK --interval=10s --timeout=5s CMD wget --no-verbose --tries=1 --spider localhost:3001/health
 
