@@ -18,7 +18,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ghcr.io/1kx-network/ipfs-pinner
           tags: |
             type=ref,event=branch
             type=ref,event=pr
